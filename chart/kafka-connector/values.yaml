@@ -1,0 +1,89 @@
+# You will need to create a license named "openfaas-license" - see the 
+# chart README for detailed instructions.
+
+image: ghcr.io/openfaas/kafka-connector-pro:0.6.0-rc2
+
+replicas: 1
+
+# Max timeout for a function
+upstreamTimeout: 2m
+
+# Use with slow consumers or long running functions
+asyncInvocation: false
+
+# Alter to the topics required
+topics: faas-request
+
+# Your Kafka broker
+brokerHost: kf-kafka:9092
+
+# HTTP content-type for invoking functions
+contentType: text/plain
+
+printResponse: true
+printResponseBody: false
+
+# Internal gateway URL
+gatewayURL: http://gateway.openfaas:8080
+
+# Basic auth for the gateway
+basic_auth: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Encryption
+tls: false
+
+# Authentication
+
+## When set to true, create secrets: "kafka-broker-username" and "kafka-broker-password"
+saslAuth: false
+
+# kubectl create secret generic \
+# kafka-broker-username \
+# -n openfaas \
+# --from-file broker-username=./broker-username.txt
+
+# kubectl create secret generic \
+# kafka-broker-password \
+# -n openfaas \
+# --from-file broker-password=./broker-password.txt
+
+brokerPasswordSecret: kafka-broker-password
+brokerUsernameSecret: kafka-broker-username
+
+## When using a custom CA:
+
+# kubectl create secret generic \
+# kafka-broker-ca \
+# -n openfaas \
+# --from-file broker-ca=./broker-ca.pem
+
+# When using client certs
+
+# kubectl create secret generic \
+# kafka-broker-cert \
+# -n openfaas \
+# --from-file broker-cert=./broker-cert.txt
+
+# kubectl create secret generic \
+# kafka-broker-key \
+# -n openfaas \
+# --from-file broker-key=./broker-key.txt
+
+# Set to empty to disable:
+
+caSecret: ""
+certSecret: ""
+keySecret: ""
+
+# Or give a name to each to enable
+
+# caSecret: kafka-broker-ca
+# certSecret: kafka-broker-cert
+# keySecret: kafka-broker-key
+
